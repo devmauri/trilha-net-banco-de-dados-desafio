@@ -40,52 +40,126 @@ Tabela responsável por representar um relacionamento do tipo muitos para muitos
 Você deverá executar o arquivo **Script Filmes.sql** em seu banco de dados SQL Server, presente na pasta Scripts deste repositório ([ou clique aqui](Script%20Filmes.sql)). Esse script irá criar um banco chamado **Filmes**, contendo as tabelas e os dados necessários para você realizar este desafio.
 
 ## Objetivo
-Você deverá criar diversas consultas, com o objetivo de retornar os dados a seguir. Abaixo de cada pedido tem o retorno esperado. O seu retorno deve ser igual ao da imagem.
+Você deverá criar diversas consultas, com o objetivo de retornar os dados a seguir.
 
 ## 1 - Buscar o nome e ano dos filmes
-
-![Exercicio 1](Imagens/1.png)
+### Resposta 
+```
+SELECT Filmes.Nome as "Nome", Filmes.Ano as "Ano"FROM Filmes
+```
 
 ## 2 - Buscar o nome e ano dos filmes, ordenados por ordem crescente pelo ano
-
-![Exercicio 2](Imagens/2.png)
-
+### Resposta 
+```
+SELECT Filmes.Nome as "Nome", Filmes.Ano as "Ano"
+    FROM Filmes
+    ORDER BY Ano ASC
+```
 ## 3 - Buscar pelo filme de volta para o futuro, trazendo o nome, ano e a duração
-
-![Exercicio 3](Imagens/3.png)
-
+### Resposta 
+```
+SELECT Filmes.Nome as "Nome", Filmes.Ano as "Ano", Filmes.Duracao as "Duração"
+    FROM Filmes
+    WHERE Nome = 'De Volta para o Futuro'
+```
 ## 4 - Buscar os filmes lançados em 1997
-
-![Exercicio 4](Imagens/4.png)
-
+### Resposta 
+```
+SELECT Filmes.Nome as "Nome", Filmes.Ano as "Ano", Filmes.Duracao as "Duração"
+    FROM Filmes
+    WHERE Ano = 1997
+```
 ## 5 - Buscar os filmes lançados APÓS o ano 2000
-
-![Exercicio 5](Imagens/5.png)
-
+### Resposta 
+```
+SELECT Filmes.Nome as "Nome", Filmes.Ano as "Ano", Filmes.Duracao as "Duração"
+    FROM Filmes
+    WHERE Ano >2000
+```
 ## 6 - Buscar os filmes com a duracao maior que 100 e menor que 150, ordenando pela duracao em ordem crescente
-
-![Exercicio 6](Imagens/6.png)
-
-## 7 - Buscar a quantidade de filmes lançadas no ano, agrupando por ano, ordenando pela duracao em ordem decrescente
-
-![Exercicio 7](Imagens/7.png)
+### Resposta 
+```
+SELECT Filmes.Nome as "Nome", Filmes.Ano as "Ano", Filmes.Duracao as "Duração"
+    FROM Filmes
+    WHERE Duracao >100 AND Duracao <150
+    ORDER BY Duracao ASC
+```
+## 7 - Buscar a quantidade de filmes lançadas no ano, agrupando por ano, ordenando pela quantidade em ordem decrescente
+### Resposta 
+```
+SELECT Filmes.Ano as "Ano", COUNT(Filmes.Id) as "Quantidade"
+    FROM Filmes
+    GROUP BY Ano
+    ORDER BY Quantidade DESC
+```
 
 ## 8 - Buscar os Atores do gênero masculino, retornando o PrimeiroNome, UltimoNome
-
-![Exercicio 8](Imagens/8.png)
-
+### Resposta 
+```
+SELECT Atores.PrimeiroNome as "Primeiro Nome", Atores.UltimoNome as "Ultimo Nome"
+    FROM Atores
+    WHERE Atores.Genero = 'M'
+```
 ## 9 - Buscar os Atores do gênero feminino, retornando o PrimeiroNome, UltimoNome, e ordenando pelo PrimeiroNome
-
-![Exercicio 9](Imagens/9.png)
-
+### Resposta 
+```
+SELECT Atores.PrimeiroNome as "Primeiro Nome", Atores.UltimoNome as "Ultimo Nome"
+    FROM Atores
+    WHERE Atores.Genero = 'F'
+    ORDER BY [Primeiro Nome] ASC
+```
 ## 10 - Buscar o nome do filme e o gênero
-
-![Exercicio 10](Imagens/10.png)
-
+### Resposta 
+```
+SELECT Filmes.Nome as "Nome do Filme", Generos.Genero as "Gênero"
+    FROM Filmes,Generos,FilmesGenero
+    WHERE FilmesGenero.IdFilme=Filmes.Id
+    and  FilmesGenero.IdGenero=Generos.Id
+```
+Ou utilizando Join
+```
+SELECT Filmes.Nome as "Nome do Filme", Generos.Genero as "Gênero"
+    FROM Filmes
+    INNER JOIN FilmesGenero
+    on FilmesGenero.IdFilme=Filmes.Id
+    INNER JOIN Generos
+    on  FilmesGenero.IdGenero=Generos.Id
+```
 ## 11 - Buscar o nome do filme e o gênero do tipo "Mistério"
-
-![Exercicio 11](Imagens/11.png)
-
+### Resposta 
+```
+SELECT Filmes.Nome as "Nome do Filme", Generos.Genero as "Gênero"
+    FROM Filmes,Generos,FilmesGenero
+    WHERE FilmesGenero.IdFilme=Filmes.Id
+    and  FilmesGenero.IdGenero=Generos.Id
+    and Generos.Genero = 'Mistério'
+``` 
+Ou utilizando Join
+```
+SELECT Filmes.Nome as "Nome do Filme", Generos.Genero as "Gênero"
+    FROM Filmes
+    INNER JOIN FilmesGenero
+    on FilmesGenero.IdFilme=Filmes.Id
+    INNER JOIN Generos
+    on  FilmesGenero.IdGenero=Generos.Id
+    and Generos.Genero = 'Mistério'
+```
 ## 12 - Buscar o nome do filme e os atores, trazendo o PrimeiroNome, UltimoNome e seu Papel
-
-![Exercicio 12](Imagens/12.png)
+### Resposta 
+```
+SELECT Filmes.Nome as "Nome do Filme", Atores.PrimeiroNome as "Nome Ator", Atores.UltimoNome as "Ultimo Nome Ator", ElencoFilme.Papel as "Papel do Ator"
+    FROM Filmes,Atores, ElencoFilme
+    WHERE ElencoFilme.IdFilme=Filmes.Id
+    and  ElencoFilme.IdAtor=Atores.Id
+    ORDER BY [Nome do Filme]
+```
+Ou utilizando Join
+```
+SELECT Filmes.Nome as "Nome do Filme", Atores.PrimeiroNome as "Nome Ator", Atores.UltimoNome as "Ultimo Nome Ator", ElencoFilme.Papel as "Papel do Ator"
+    FROM Filmes
+    INNER JOIN ElencoFilme
+    ON ElencoFilme.IdFilme=Filmes.Id
+    INNER JOIN Atores
+    ON ElencoFilme.IdAtor=Atores.Id
+    ORDER BY [Nome do Filme]
+```
